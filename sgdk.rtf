@@ -1,0 +1,129 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2761
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f0\fs29\fsmilli14667 \cf0 VDP_drawText("Hello Mega Drive World!", 8, 12);\
+\'a0\
+#include <genesis.h>\uc0\u8232 \u8232 int main()\u8232 \{\u8232 \'a0\'a0\'a0 VDP_drawText("Hello Mega Drive World!", 8, 12);\u8232 \'a0\'a0\'a0 while(1)\u8232 \'a0\'a0\'a0 \{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 SYS_doVBlankProcess();\u8232 \'a0\'a0\'a0 \}\u8232 \'a0\'a0\'a0 return (0);\u8232 \}\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\fs32 \cf0 \'a0\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\fs29\fsmilli14667 \cf0 VDP_drawText("Hello Mega Drive World!", 8, 12);\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\fs32 \cf0 \'a0\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\fs29\fsmilli14667 \cf0 VDP_loadTileSet(bgtile.tileset,1,DMA);\uc0\u8232 PAL_setPalette(PAL1, bgtile.palette->data);\u8232 VDP_setTileMapXY(BG_B,TILE_ATTR_FULL(PAL1,FALSE,FALSE,FALSE,1),2,2);\
+\'a0\
+VDP_setTileMapXY(BG_B,1,2,2); //old\uc0\u8232 VDP_setTileMapXY(BG_B,TILE_ATTR_FULL(PAL1,FALSE,FALSE,FALSE,1),2,2); //new\
+\'a0\
+//Load our tileset\uc0\u8232 VDP_loadTileSet(bgtile.tileset,1,DMA);\u8232 PAL_setPalette(PAL1, bgtile.palette->data);\u8232 VDP_fillTileMapRect(BG_B,TILE_ATTR_FULL(PAL1,0,FALSE,FALSE,1),0,0,40,30);\u8232 \u8232 while(1)\u8232 \{\u8232 \'a0\'a0\'a0 //Do cool stuff in a loop!\u8232 \'a0\'a0\'a0 SYS_doVBlankProcess();\u8232 \}\u8232 \u8232 //Stop doing cool stuff :(\u8232 return(0);\
+\'a0\
+\'a0\
+IMAGE\'a0\'a0 bgtile\'a0\'a0\'a0 "tiles/bgtile.png"\'a0 0\uc0\u8232 SPRITE\'a0 imgball\'a0\'a0\'a0 "sprites/ball.png"\'a0 1\'a0\'a0 1\'a0\'a0 NONE\
+\'a0\
+\'a0\
+ball = SPR_addSprite(&imgball,100,100,TILE_ATTR(PAL1,0, FALSE, FALSE));\
+\'a0\
+\'a0\
+void moveBall()\{\uc0\u8232 \'a0\'a0\'a0 //Ball movement goes here\u8232 \}\
+\'a0\
+\'a0\
+int ball_pos_x = 100;\uc0\u8232 int ball_pos_y = 100;\u8232 int ball_vel_x = 1;\u8232 int ball_vel_y = 1;\u8232 int ball_width = 8;\u8232 int ball_height = 8;\
+\'a0\
+\'a0\
+ball_pos_x += ball_vel_x;\uc0\u8232 ball_pos_y += ball_vel_y;\u8232 \u8232 SPR_setPosition(ball,ball_pos_x,ball_pos_y);\
+\'a0\
+\'a0\
+moveBall();\
+\'a0\
+/*The edges of the play field*/\uc0\u8232 const int LEFT_EDGE = 0;\u8232 const int RIGHT_EDGE = 320;\u8232 const int TOP_EDGE = 0;\u8232 const int BOTTOM_EDGE = 224;\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\fs32 \cf0 \'a0\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\fs29\fsmilli14667 \cf0 if(ball_pos_x < LEFT_EDGE)\{\uc0\u8232 \'a0\'a0\'a0 ball_pos_x = LEFT_EDGE;\u8232 \'a0\'a0\'a0 ball_vel_x = -ball_vel_x;\u8232 \} else if(ball_pos_x + ball_width > RIGHT_EDGE)\{\u8232 \'a0\'a0\'a0 ball_pos_x = RIGHT_EDGE - ball_width;\u8232 \'a0\'a0\'a0 ball_vel_x = -ball_vel_x;\u8232 \}\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\fs32 \cf0 \'a0\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\fs29\fsmilli14667 \cf0 \'a0\
+if(ball_pos_y < TOP_EDGE)\{\uc0\u8232 \'a0\'a0\'a0 ball_pos_y = TOP_EDGE;\u8232 \'a0\'a0\'a0 ball_vel_y = -ball_vel_y;\u8232 \} else if(ball_pos_y + ball_height > BOTTOM_EDGE)\{\u8232 \'a0\'a0\'a0 ball_pos_y = BOTTOM_EDGE - ball_height;\u8232 \'a0\'a0\'a0 ball_vel_y = -ball_vel_y;\u8232 \}\
+\'a0\
+\'a0\
+void moveBall()\{\uc0\u8232 \u8232 \'a0\'a0\'a0 //Check horizontal bounds\u8232 \'a0\'a0\'a0 if(ball_pos_x < LEFT_EDGE)\{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 ball_pos_x = LEFT_EDGE;\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 ball_vel_x = -ball_vel_x;\u8232 \'a0\'a0\'a0 \} else if(ball_pos_x + ball_width > RIGHT_EDGE)\{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 ball_pos_x = RIGHT_EDGE - ball_width;\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 ball_vel_x = -ball_vel_x;\u8232 \'a0\'a0\'a0 \}\u8232 \u8232 \'a0\'a0\'a0 //Check vertical bounds\u8232 \'a0\'a0\'a0 if(ball_pos_y < TOP_EDGE)\{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 ball_pos_y = TOP_EDGE;\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 ball_vel_y = -ball_vel_y;\u8232 \'a0\'a0\'a0 \} else if(ball_pos_y + ball_height > BOTTOM_EDGE)\{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 ball_pos_y = BOTTOM_EDGE - ball_height;\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 ball_vel_y = -ball_vel_y;\u8232 \'a0\'a0\'a0 \}\u8232 \u8232 \'a0\'a0\'a0 //Position the ball\u8232 \'a0\'a0\'a0 ball_pos_x += ball_vel_x;\u8232 \'a0\'a0\'a0 ball_pos_y += ball_vel_y;\u8232 \u8232 \'a0\'a0\'a0 SPR_setPosition(ball,ball_pos_x,ball_pos_y);\u8232 \}\
+\'a0\
+\'a0\
+int player_pos_x = 144;\uc0\u8232 const int player_pos_y = 200;\u8232 int player_vel_x = 0;\u8232 const int player_width = 32;\u8232 const int player_height = 8;\
+\'a0\
+\'a0\
+player = SPR_addSprite(&paddle, player_pos_x, player_pos_y, TILE_ATTR(PAL1, 0, FALSE, FALSE));\
+\'a0\
+\'a0\
+void myJoyHandler( u16 joy, u16 changed, u16 state)\uc0\u8232 \{\u8232 \'a0\'a0\'a0 if (joy == JOY_1)\u8232 \'a0\'a0\'a0 \{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 /*Set player velocity if left or right are pressed;\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 *set velocity to 0 if no direction is pressed */\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 if (state & BUTTON_RIGHT)\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 \{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 player_vel_x = 3;\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 \}\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 else if (state & BUTTON_LEFT)\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 \{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 player_vel_x = -3;\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 \} else\{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 if( (changed & BUTTON_RIGHT) | (changed & BUTTON_LEFT) )\{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 player_vel_x = 0;\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 \}\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 \}\u8232 \'a0\'a0\'a0 \}\u8232 \}\
+\'a0\
+void positionPlayer()\{\uc0\u8232 \'a0\'a0\'a0 /*Add the player's velocity to its position*/\u8232 \'a0\'a0\'a0 player_pos_x += player_vel_x;\u8232 \u8232 \'a0\'a0\'a0 /*Keep the player within the bounds of the screen*/\u8232 \'a0\'a0\'a0 if(player_pos_x < LEFT_EDGE) player_pos_x = LEFT_EDGE;\u8232 \'a0\'a0\'a0 if(player_pos_x + player_width > RIGHT_EDGE) player_pos_x = RIGHT_EDGE - player_width;\u8232 \u8232 \'a0\'a0\'a0 /*Let the Sprite engine position the sprite*/\u8232 \'a0\'a0\'a0 SPR_setPosition(player,player_pos_x,player_pos_y);\u8232 \}\
+\'a0\
+while(1)\uc0\u8232 \{\u8232 \'a0\'a0\'a0 moveBall();\u8232 \'a0\'a0\'a0 positionPlayer();\u8232 \'a0\'a0\'a0 \u8232 \'a0\'a0\'a0 SPR_update();\u8232 \'a0\'a0\'a0 SYS_doVBlankProcess();\u8232 \}\
+\'a0\
+\'a0\
+if(ball_pos_x < player_pos_x + player_width && ball_pos_x + ball_width > player_pos_x)\{\uc0\u8232 \'a0\'a0\'a0 // do things\u8232 \}\
+\'a0\
+\'a0\
+if(ball_pos_x < player_pos_x + player_width && ball_pos_x + ball_width > player_pos_x)\{\uc0\u8232 \'a0\'a0\'a0 if(ball_pos_y < player_pos_y + player_height && ball_pos_y + ball_height >= player_pos_y)\{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 // do things\u8232 \'a0\'a0\'a0 \}\u8232 \}\
+\'a0\
+\'a0\
+/*Check for collisions with the player paddle*/\uc0\u8232 if(ball_pos_x < player_pos_x + player_width && ball_pos_x + ball_width > player_pos_x)\{\u8232 \'a0\'a0\'a0 if(ball_pos_y < player_pos_y + player_height && ball_pos_y + ball_height >= player_pos_y)\{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 //On collision, invert the velocity\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 ball_pos_y = player_pos_y - ball_height - 1;\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 ball_vel_y = -ball_vel_y;\u8232 \'a0\'a0\'a0 \}\u8232 \}\
+\'a0\
+\'a0\
+/*Score variables*/\uc0\u8232 int score = 0;\u8232 char label_score[6] = "SCORE\\0";\u8232 char str_score[4] = "0";\
+\'a0\
+\'a0\
+/*Draw the texts*/\uc0\u8232 VDP_setTextPlane(BG_A);\u8232 VDP_drawText(label_score,1,1);\
+\'a0\
+int sign(int x) \{\uc0\u8232 \'a0\'a0\'a0 return (x > 0) - (x < 0);\u8232 \}\
+\'a0\
+\'a0\
+void updateScoreDisplay()\{\uc0\u8232 \'a0\'a0\'a0 sprintf(str_score,"%d",score);\u8232 \'a0\'a0\'a0 VDP_clearText(1,2,3);\u8232 \'a0\'a0\'a0 VDP_drawText(str_score,1,2);\u8232 \}\
+\'a0\
+\'a0\
+VDP_setTextPlane(BG_A);\uc0\u8232 VDP_drawText(label_score,1,1);\u8232 updateScoreDisplay();\
+\'a0\
+\'a0\
+if( score % 10 == 0)\{\uc0\u8232 \'a0\'a0\'a0 ball_vel_x += sign(ball_vel_x);\u8232 \'a0\'a0\'a0 ball_vel_y += sign(ball_vel_y);\u8232 \}\
+\'a0\
+\'a0\
+void moveBall()\{\uc0\u8232 \'a0\'a0\'a0 //Check horizontal bounds\u8232 \'a0\'a0\'a0 if(ball_pos_x < LEFT_EDGE)\{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 ball_pos_x = LEFT_EDGE;\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 ball_vel_x = -ball_vel_x;\u8232 \'a0\'a0\'a0 \} else if(ball_pos_x + ball_width > RIGHT_EDGE)\{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 ball_pos_x = RIGHT_EDGE - ball_width;\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 ball_vel_x = -ball_vel_x;\u8232 \'a0\'a0\'a0 \}\u8232 \u8232 \'a0\'a0\'a0 //Check vertical bounds\u8232 \'a0\'a0\'a0 if(ball_pos_y < TOP_EDGE)\{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 ball_pos_y = TOP_EDGE;\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 ball_vel_y = -ball_vel_y;\u8232 \'a0\'a0\'a0 \} else if(ball_pos_y + ball_height > BOTTOM_EDGE)\{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 ball_pos_y = BOTTOM_EDGE - ball_height;\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 ball_vel_y = -ball_vel_y;\u8232 \'a0\'a0\'a0 \}\u8232 \u8232 \'a0\'a0\'a0 //Check for collision with paddle\u8232 \'a0\'a0\'a0 if(ball_pos_x < player_pos_x + player_width && ball_pos_x + ball_width > player_pos_x)\{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 if(ball_pos_y < player_pos_y + player_height && ball_pos_y + ball_height >= player_pos_y)\{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 //On collision, invert the velocity\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 ball_pos_y = player_pos_y - ball_height - 1;\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 ball_vel_y = -ball_vel_y;\u8232 \u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 //Increase the score and update the HUD\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 score++;\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 updateScoreDisplay();\u8232 \u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 //Make ball faster on every 10th hit\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 if( score % 10 == 0)\{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 ball_vel_x += sign(ball_vel_x);\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 ball_vel_y += sign(ball_vel_y);\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 \}\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 \}\u8232 \'a0\'a0\'a0 \}\u8232 \u8232 \'a0\'a0\'a0 //Position the ball\u8232 \'a0\'a0\'a0 ball_pos_x += ball_vel_x;\u8232 \'a0\'a0\'a0 ball_pos_y += ball_vel_y;\u8232 \u8232 \'a0\'a0\'a0 SPR_setPosition(ball,ball_pos_x,ball_pos_y);\'a0\'a0\'a0 \u8232 \}\
+\'a0\
+\'a0\
+/*Draws text in the center of the screen*/\uc0\u8232 void showText(char s[])\{\u8232 \'a0\'a0\'a0 VDP_drawText(s, 20 - strlen(s)/2 ,15);\u8232 \}\
+\'a0\
+game_on = FALSE;\uc0\u8232 char msg_start[22] = "PRESS START TO BEGIN!\\0";\u8232 char msg_reset[37] = "GAME OVER! PRESS START TO PLAY AGAIN.";\
+\'a0\
+\'a0\
+void endGame()\{\uc0\u8232 \'a0\'a0\'a0 showText(msg_reset);\u8232 \'a0\'a0\'a0 game_on = FALSE;\u8232 \}\
+\'a0\
+\'a0\
+\} else if(ball_pos_y + ball_height > BOTTOM_EDGE)\{\uc0\u8232 \'a0\'a0\'a0 ball_pos_y = BOTTOM_EDGE - ball_height;\u8232 \'a0\'a0\'a0 ball_vel_y = -ball_vel_y;\u8232 \}\
+\'a0\
+else if(ball_pos_y + ball_height > BOTTOM_EDGE)\{\uc0\u8232 \'a0\'a0\'a0 endGame();\u8232 \}\
+\'a0\
+\'a0\
+void startGame()\{\uc0\u8232 \'a0\'a0\'a0 score = 0;\u8232 \'a0\'a0\'a0 updateScoreDisplay();\u8232 \u8232 \'a0\'a0\'a0 ball_pos_x = 0;\u8232 \'a0\'a0\'a0 ball_pos_y = 0;\u8232 \u8232 \'a0\'a0\'a0 ball_vel_x = 1;\u8232 \'a0\'a0\'a0 ball_vel_y = 1;\u8232 \u8232 \'a0\'a0\'a0 /*Clear the text from the screen*/\u8232 \'a0\'a0\'a0 VDP_clearTextArea(0,10,40,10);\u8232 \u8232 \'a0\'a0\'a0 game_on = TRUE;\u8232 \}\
+\'a0\
+if(state & BUTTON_START)\{\uc0\u8232 \'a0\'a0\'a0 if(!game_on)\{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 startGame();\u8232 \'a0\'a0\'a0 \}\u8232 \}\
+\'a0\
+\'a0\
+while(1)\uc0\u8232 \{\u8232 \'a0\'a0\'a0 if(game_on == TRUE)\{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 moveBall();\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 positionPlayer();\u8232 \'a0\'a0\'a0 \}\u8232 \u8232 \'a0\'a0\'a0 SPR_update();\u8232 \'a0\'a0\'a0 SYS_doVBlankProcess();\u8232 \}\u8232 \u8232 return(0);\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\fs32 \cf0 \'a0\
+}

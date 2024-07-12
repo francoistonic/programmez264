@@ -1,0 +1,324 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2761
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f0\fs29\fsmilli14667 \cf0 \'a0\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\fs24 \cf0 <div>Teachable Machine Image Model</div>
+\fs29\fsmilli14667 \
+
+\fs24 <button type="button" onclick="init()">Start</button>
+\fs29\fsmilli14667 \
+
+\fs24 <div id="webcam-container"></div>
+\fs29\fsmilli14667 \
+
+\fs24 <div id="label-container"></div>
+\fs29\fsmilli14667 \
+
+\fs24 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+\fs29\fsmilli14667 \
+
+\fs24 <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+\fs29\fsmilli14667 \
+
+\fs24 <script type="text/javascript">
+\fs29\fsmilli14667 \
+
+\fs24 \'a0\'a0\'a0 // More API functions here:
+\fs29\fsmilli14667 \
+
+\fs24 \'a0\'a0\'a0 // https://github.com/googlecreativelab/teachablemachine-ommunity/tree/master/libraries/image
+\fs29\fsmilli14667 \
+
+\fs24 \'a0\'a0\'a0 // the link to your model provided by Teachable Machine export panel
+\fs29\fsmilli14667 \
+
+\fs24 \'a0\'a0\'a0 const URL = "./my_model/";
+\fs29\fsmilli14667 \
+
+\fs24 \'a0
+\fs29\fsmilli14667 \
+
+\fs24 \'a0\'a0\'a0 let model, webcam, labelContainer, maxPredictions;
+\fs29\fsmilli14667 \
+
+\fs24 \'a0
+\fs29\fsmilli14667 \
+
+\fs24 \'a0\'a0\'a0 // Load the image model and setup the webcam
+\fs29\fsmilli14667 \
+
+\fs24 \'a0\'a0\'a0 async function init() \{
+\fs29\fsmilli14667 \
+
+\fs24 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 const modelURL = URL + "model.json";
+\fs29\fsmilli14667 \
+
+\fs24 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 const metadataURL = URL + "metadata.json";
+\fs29\fsmilli14667 \
+
+\fs24 \'a0
+\fs29\fsmilli14667 \
+
+\fs24 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 // load the model and metadata
+\fs29\fsmilli14667 \
+
+\fs24 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
+\fs29\fsmilli14667 \
+
+\fs24 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 // or files from your local hard drive
+\fs29\fsmilli14667 \
+
+\fs24 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 // Note: the pose library adds "tmImage" object to your window (window.tmImage)
+\fs29\fsmilli14667 \
+
+\fs24 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 model = await tmImage.load(modelURL, metadataURL);
+\fs29\fsmilli14667 \
+
+\fs24 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 maxPredictions = model.getTotalClasses();
+\fs29\fsmilli14667 \
+
+\fs24 \'a0
+\fs29\fsmilli14667 \
+
+\fs24 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 // Convenience function to setup a webcam
+\fs29\fsmilli14667 \
+
+\fs24 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 const flip = true; // whether to flip the webcam
+\fs29\fsmilli14667 \
+
+\fs24 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 webcam = new tmImage.Webcam(200, 200, flip); // width, height, flip
+\fs29\fsmilli14667 \
+
+\fs24 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 await webcam.setup(); // request access to the webcam
+\fs29\fsmilli14667 \
+
+\fs24 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 await webcam.play();
+\fs29\fsmilli14667 \
+
+\fs24 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 window.requestAnimationFrame(loop);
+\fs29\fsmilli14667 \
+
+\fs24 \'a0
+\fs29\fsmilli14667 \
+
+\fs24 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 // append elements to the DOM
+\fs29\fsmilli14667 \
+
+\fs24 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 document.getElementById("webcam-container").appendChild(webcam.canvas);
+\fs29\fsmilli14667 \
+
+\fs24 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 labelContainer = document.getElementById("label-container");
+\fs29\fsmilli14667 \
+
+\fs24 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 for (let i = 0; i < maxPredictions; i++) \{ // and class labels
+\fs29\fsmilli14667 \
+
+\fs24 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 labelContainer.appendChild(document.createElement("div"));
+\fs29\fsmilli14667 \
+
+\fs24 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 \}
+\fs29\fsmilli14667 \
+
+\fs24 \'a0\'a0\'a0 \}
+\fs29\fsmilli14667 \
+
+\fs24 \'a0
+\fs29\fsmilli14667 \
+
+\fs24 \'a0\'a0\'a0 async function loop() \{
+\fs29\fsmilli14667 \
+
+\fs24 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 webcam.update(); // update the webcam frame
+\fs29\fsmilli14667 \
+
+\fs24 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 await predict();
+\fs29\fsmilli14667 \
+
+\fs24 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 window.requestAnimationFrame(loop);
+\fs29\fsmilli14667 \
+
+\fs24 \'a0\'a0\'a0 \}
+\fs29\fsmilli14667 \
+
+\fs24 \'a0
+\fs29\fsmilli14667 \
+
+\fs24 \'a0\'a0\'a0 // run the webcam image through the image model
+\fs29\fsmilli14667 \
+
+\fs24 \'a0\'a0\'a0 async function predict() \{
+\fs29\fsmilli14667 \
+
+\fs24 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 // predict can take in an image, video or canvas html element
+\fs29\fsmilli14667 \
+
+\fs24 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 const prediction = await model.predict(webcam.canvas);
+\fs29\fsmilli14667 \
+
+\fs24 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 for (let i = 0; i < maxPredictions; i++) \{
+\fs29\fsmilli14667 \
+
+\fs24 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 const classPrediction =
+\fs29\fsmilli14667 \
+
+\fs24 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 prediction[i].className + ": " + prediction[i].probability.toFixed(2);
+\fs29\fsmilli14667 \
+
+\fs24 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 labelContainer.childNodes[i].innerHTML = classPrediction;
+\fs29\fsmilli14667 \
+
+\fs24 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 \}
+\fs29\fsmilli14667 \
+
+\fs24 \'a0\'a0\'a0 \}
+\fs29\fsmilli14667 \
+
+\fs24 </script>
+\fs29\fsmilli14667 \
+\'a0\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\fs37\fsmilli18667 \cf0 \
+\'a0
+\fs29\fsmilli14667 \
+\'a0\
+
+\fs26\fsmilli13333 from keras.models import load_model\'a0 # TensorFlow is required for Keras to work
+\fs29\fsmilli14667 \
+
+\fs26\fsmilli13333 from PIL import Image, ImageOps\'a0 # Install pillow instead of PIL
+\fs29\fsmilli14667 \
+
+\fs26\fsmilli13333 import numpy as np
+\fs29\fsmilli14667 \
+
+\fs26\fsmilli13333 \'a0
+\fs29\fsmilli14667 \
+
+\fs26\fsmilli13333 # Disable scientific notation for clarity
+\fs29\fsmilli14667 \
+
+\fs26\fsmilli13333 np.set_printoptions(suppress=True)
+\fs29\fsmilli14667 \
+
+\fs26\fsmilli13333 \'a0
+\fs29\fsmilli14667 \
+
+\fs26\fsmilli13333 # Load the model
+\fs29\fsmilli14667 \
+
+\fs26\fsmilli13333 model = load_model("keras_Model.h5", compile=False)
+\fs29\fsmilli14667 \
+
+\fs26\fsmilli13333 \'a0
+\fs29\fsmilli14667 \
+
+\fs26\fsmilli13333 # Load the labels
+\fs29\fsmilli14667 \
+
+\fs26\fsmilli13333 class_names = open("labels.txt", "r").readlines()
+\fs29\fsmilli14667 \
+
+\fs26\fsmilli13333 \'a0
+\fs29\fsmilli14667 \
+
+\fs26\fsmilli13333 # Create the array of the right shape to feed into the keras model
+\fs29\fsmilli14667 \
+
+\fs26\fsmilli13333 # The 'length' or number of images you can put into the array is
+\fs29\fsmilli14667 \
+
+\fs26\fsmilli13333 # determined by the first position in the shape tuple, in this case 1
+\fs29\fsmilli14667 \
+
+\fs26\fsmilli13333 data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
+\fs29\fsmilli14667 \
+
+\fs26\fsmilli13333 \'a0
+\fs29\fsmilli14667 \
+
+\fs26\fsmilli13333 # Replace this with the path to your image
+\fs29\fsmilli14667 \
+
+\fs26\fsmilli13333 image = Image.open("<IMAGE_PATH>").convert("RGB")
+\fs29\fsmilli14667 \
+
+\fs26\fsmilli13333 \'a0
+\fs29\fsmilli14667 \
+
+\fs26\fsmilli13333 # resizing the image to be at least 224x224 and then cropping from the center
+\fs29\fsmilli14667 \
+
+\fs26\fsmilli13333 size = (224, 224)
+\fs29\fsmilli14667 \
+
+\fs26\fsmilli13333 image = ImageOps.fit(image, size, Image.Resampling.LANCZOS)
+\fs29\fsmilli14667 \
+
+\fs26\fsmilli13333 \'a0
+\fs29\fsmilli14667 \
+
+\fs26\fsmilli13333 # turn the image into a numpy array
+\fs29\fsmilli14667 \
+
+\fs26\fsmilli13333 image_array = np.asarray(image)
+\fs29\fsmilli14667 \
+
+\fs26\fsmilli13333 \'a0
+\fs29\fsmilli14667 \
+
+\fs26\fsmilli13333 # Normalize the image
+\fs29\fsmilli14667 \
+
+\fs26\fsmilli13333 normalized_image_array = (image_array.astype(np.float32) / 127.5) - 1
+\fs29\fsmilli14667 \
+
+\fs26\fsmilli13333 \'a0
+\fs29\fsmilli14667 \
+
+\fs26\fsmilli13333 # Load the image into the array
+\fs29\fsmilli14667 \
+
+\fs26\fsmilli13333 data[0] = normalized_image_array
+\fs29\fsmilli14667 \
+
+\fs26\fsmilli13333 \'a0
+\fs29\fsmilli14667 \
+
+\fs26\fsmilli13333 # Predicts the model
+\fs29\fsmilli14667 \
+
+\fs26\fsmilli13333 prediction = model.predict(data)
+\fs29\fsmilli14667 \
+
+\fs26\fsmilli13333 index = np.argmax(prediction)
+\fs29\fsmilli14667 \
+
+\fs26\fsmilli13333 class_name = class_names[index]
+\fs29\fsmilli14667 \
+
+\fs26\fsmilli13333 confidence_score = prediction[0][index]
+\fs29\fsmilli14667 \
+
+\fs26\fsmilli13333 \'a0
+\fs29\fsmilli14667 \
+
+\fs26\fsmilli13333 # Print prediction and confidence score
+\fs29\fsmilli14667 \
+
+\fs26\fsmilli13333 print("Class:", class_name[2:], end="")
+\fs29\fsmilli14667 \
+
+\fs26\fsmilli13333 print("Confidence Score:", confidence_score)
+\fs29\fsmilli14667 \
+\'a0\
+\
+\'a0\
+\'a0\
+}
